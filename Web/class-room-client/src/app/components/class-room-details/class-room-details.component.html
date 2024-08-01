@@ -1,0 +1,85 @@
+<div class="profile-page main-content">
+    <div class="card-container">
+        <div class="card-component">
+            <legend class="k-form-legend">
+                <div class="legend">
+                    <a class="back" [routerLink]="'/class-rooms'">
+                        <kendo-svgicon [icon]="arrowLeftIcon" size="xlarge"></kendo-svgicon>
+                    </a>
+                    <h1>Обновить помещение</h1>
+                    <button class="delete" kendoButton (click)="remove()" themeColor="error" class="last">Удалить</button>
+                </div>
+            </legend>
+            <form class="k-form k-form-horizontal" style="max-width: 700px" [formGroup]="formGroup">
+                <fieldset class="k-form-fieldset">
+                   
+                    <kendo-formfield orientation="horizontal">
+                        <kendo-label class="k-label" [for]="id" text="Id"> </kendo-label>
+                        <kendo-textbox formControlName="id" [clearButton]="true" #id required> </kendo-textbox>
+                    </kendo-formfield>
+
+                    <kendo-formfield orientation="horizontal">
+                        <kendo-label class="k-label" [for]="name" text="Наименование"> </kendo-label>
+                        <kendo-textbox formControlName="name" [clearButton]="true" #name required> </kendo-textbox>
+                        <kendo-formerror>Ошибка: Наименование обязательно</kendo-formerror>
+                    </kendo-formfield>
+
+                    <kendo-formfield orientation="horizontal">
+                        <kendo-label class="k-label" [for]="number" text="Номер"> </kendo-label>
+                        <kendo-numerictextbox #number format="##" [min]="0" formControlName="number"/>
+                        <kendo-formerror>Ошибка: Номер обязателен</kendo-formerror>
+                    </kendo-formfield>
+
+                    <kendo-formfield orientation="horizontal">
+                        <kendo-label class="k-label" [for]="floor" text="Этаж"> </kendo-label>
+                        <kendo-numerictextbox #floor format="##" [min]="0" [max]="50" formControlName="floor"/>
+                        <kendo-formerror>Ошибка: Этаж обязателен</kendo-formerror>
+                    </kendo-formfield>
+
+                    <kendo-formfield orientation="horizontal">
+                        <kendo-label class="k-label" [for]="capacity" text="Вместимость"> </kendo-label>
+                        <kendo-numerictextbox #capacity format="##" [min]="0" formControlName="capacity"/>
+                        <kendo-formerror>Ошибка: Вместимость обязательна</kendo-formerror>
+                    </kendo-formfield>
+
+                    <kendo-formfield  orientation="horizontal">
+                        <kendo-label [for]="classRoomType" text="Тип помещения"></kendo-label>
+                        <kendo-dropdownlist
+                            #classRoomType
+                            [data]="classRoomTypes"
+                            [valuePrimitive]="true"
+                            formControlName="typeId"
+                            textField="description"
+                            valueField="id"
+                        >
+                        </kendo-dropdownlist>
+                        <kendo-formerror>Ошибка: Тип помещения обязателен</kendo-formerror>
+                    </kendo-formfield>
+                    
+                    <kendo-formfield  orientation="horizontal">
+                        <kendo-label [for]="building" text="Здание"></kendo-label>
+                        <kendo-dropdownlist
+                            #building
+                            [data]="buildings"
+                            [valuePrimitive]="true"
+                            formControlName="buildingId"
+                            textField="name"
+                            valueField="id"
+                        >
+                        </kendo-dropdownlist>
+                        <kendo-formerror>Ошибка: Здание обязательно</kendo-formerror>
+                    </kendo-formfield>
+
+                    <hr />
+                    <div class="k-form-buttons">
+                        <button kendoButton (click)="cancelChanges()">Отмена</button>
+                        <button kendoButton [primary]="true" [disabled]="formGroup.invalid || formGroup.pristine" (click)="saveChanges()">
+                            Сохранить
+                        </button>
+                      
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

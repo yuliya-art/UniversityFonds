@@ -1,0 +1,14 @@
+@import './variables';
+@import './typography';
+@import './common';
+
+
+a {
+   color: #2942bb !important; 
+}
+
+a:hover {
+    color: #1a2e88; 
+    text-decoration: underline !important;
+    text-decoration-color: #1a2e88; 
+ }

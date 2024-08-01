@@ -1,0 +1,43 @@
+<div class="card-container">
+    <div class="card-header-wrapper">
+        <h3 class="card-title">Список помещений</h3>
+        <button class="create" kendoButton (click)="createClassRoom()" themeColor="primary" class="last">Новое помещения</button>
+    </div>
+
+    <div class="card-component">
+        <kendo-grid
+            [kendoGridBinding]="gridView"
+            kendoGridSelectBy="id"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [reorderable]="true"
+            [resizable]="true"
+            [height]="480"
+            [columnMenu]="{ filter: true }"
+        >
+            <ng-template kendoGridToolbarTemplate>
+                <kendo-textbox placeholder="Поиск.." kendoTextBox (valueChange)="onFilter($event)">
+                </kendo-textbox>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <button kendoGridExcelCommand type="button" [svgIcon]="excelIcon">
+                    Экспорт Excel
+                </button>
+                <button kendoGridPDFCommand [svgIcon]="pdfIcon">Экспорт PDF</button>
+            </ng-template>
+ 
+            <kendo-grid-column field="name" title="Наименование" [width]="130"> 
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <a [routerLink]="'/class-rooms/' + dataItem.id">{{ dataItem.name }}</a>
+            </ng-template>
+        </kendo-grid-column>
+            <kendo-grid-column field="floor" title="Этаж" [width]="50"> </kendo-grid-column>
+            <kendo-grid-column field="number" title="Номер" [width]="50"> </kendo-grid-column>
+            <kendo-grid-column field="capacity" title="Вместительность" [width]="100"> </kendo-grid-column>
+            <kendo-grid-column field="type" title="Тип помещения" [width]="150"> </kendo-grid-column>
+            <kendo-grid-column field="building" title="Здание/корпус" [width]="150"> </kendo-grid-column>
+            <kendo-grid-pdf fileName="ClassRooms.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="ClassRooms.xlsx"></kendo-grid-excel>
+        </kendo-grid>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="card-container">
+    <div class="card-header-wrapper">
+        <h3 class="card-title">Список зданий/корпусов</h3>
+        <button class="create" kendoButton (click)="createBuilding()" themeColor="primary" class="last">Новое здание/корпус</button>
+    </div>
+
+    <div class="card-component">
+        <kendo-grid
+            [kendoGridBinding]="gridView"
+            kendoGridSelectBy="id"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [reorderable]="true"
+            [resizable]="true"
+            [height]="480"
+            [columnMenu]="{ filter: true }"
+        >
+            <ng-template kendoGridToolbarTemplate>
+                <kendo-textbox placeholder="Поиск.." kendoTextBox (valueChange)="onFilter($event)">
+                </kendo-textbox>
+                <kendo-grid-spacer></kendo-grid-spacer>
+                <button kendoGridExcelCommand type="button" [svgIcon]="excelIcon">
+                    Экспорт Excel
+                </button>
+                <button kendoGridPDFCommand [svgIcon]="pdfIcon">Экспорт PDF</button>
+            </ng-template>
+ 
+            <kendo-grid-column field="name" title="Наименование" [width]="130"> 
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <a [routerLink]="'/buildings/' + dataItem.id">{{ dataItem.name }}</a>
+            </ng-template>
+        </kendo-grid-column>
+            <kendo-grid-column field="description" title="Описание" [width]="220"> </kendo-grid-column>
+            <kendo-grid-column field="address" title="Адрес" [width]="200"> </kendo-grid-column>
+            <kendo-grid-column field="floorsNumber" title="Этажность" [width]="200"> </kendo-grid-column>
+            <kendo-grid-pdf fileName="Buildings.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="Buildings.xlsx"></kendo-grid-excel>
+        </kendo-grid>
+    </div>
+</div>

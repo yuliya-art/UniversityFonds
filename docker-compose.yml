@@ -1,0 +1,84 @@
+version: '3.4'
+
+services:
+  building.api:
+    image: ${DOCKER_REGISTRY-}buildingapi
+    build:
+      context: .
+      dockerfile: Building.Api/Dockerfile
+    depends_on: 
+      rabbit:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+  
+  classroom.api:
+    image: ${DOCKER_REGISTRY-}classroomapi
+    build:
+      context: .
+      dockerfile: ClassRoom.Api/Dockerfile
+    depends_on: 
+      rabbit:
+        condition: service_healthy
+    ports:
+      - "5001:5001"
+
+  building.database: 
+    image: postgres:latest
+    container_name: building.database
+    environment:
+      - POSTGRES_DB=building
+      - POSTGRES_USER=building_db_admin
+      - POSTGRES_PASSWORD=00C04F79EFBC
+    volumes:
+      - ./.containers/building-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+  classroom.database: 
+    image: postgres:latest
+    container_name: classroom.database
+    environment:
+      - POSTGRES_DB=classroom
+      - POSTGRES_USER=classroom_db_admin
+      - POSTGRES_PASSWORD=11C04F79EFBC
+    volumes:
+      - ./.containers/classroom-db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+ 
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbit'
+    volumes:
+        - ./.containers/rabbitmq/data/:/var/lib/rabbitmq/
+        - ./.containers/rabbitmq/log/:/var/log/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  angular-client:
+    image: ${DOCKER_REGISTRY-}angularclient
+    container_name: 'web'
+    build:
+      context: .
+      dockerfile: Web/class-room-client/Dockerfile
+    ports:
+      - "8085:80"

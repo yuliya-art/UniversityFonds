@@ -1,0 +1,114 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "class-room-client": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "@progress/kendo-angular-intl/locales/en/all",
+              "@progress/kendo-angular-intl/locales/es/all",
+              "@progress/kendo-angular-intl/locales/fr/all"
+            ],
+            "outputPath": "dist/class-room-client",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+                "zone.js"
+              ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@progress/kendo-theme-bootstrap/dist",
+                "output": "/assets/kendo-theme-bootstrap/dist"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@progress/kendo-theme-default/dist",
+                "output": "/assets/kendo-theme-default/dist"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@progress/kendo-theme-material/dist",
+                "output": "/assets/kendo-theme-material/dist"
+              }
+            ],
+            "styles": [
+              "src/styles/main.scss"
+            ],
+            "scripts": [],
+            "extractLicenses": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "8mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "class-room-client:build",
+            "proxyConfig": "src/proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "class-room-client:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "class-room-client:build"
+          }
+        }
+      }
+    }
+  }
+}
